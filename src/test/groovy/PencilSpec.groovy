@@ -3,7 +3,6 @@ import spock.lang.Specification
 class PencilSpec extends Specification {
 
     Paper paper
-    Pencil pencil
 
     def setup() {
         paper = new Paper()
@@ -74,6 +73,46 @@ class PencilSpec extends Specification {
 
         then:
         paper.contents == 'a'
+    }
+
+    def 'pencil degrades over multiple writings'() {
+        given:
+        def pencil = new Pencil(3)
+
+        when:
+        pencil.write(paper, 'a'*4)
+        pencil.write(paper, 'a'*4)
+
+        then:
+        paper.contents == 'a'*3 + ' '*5
+    }
+
+    def 'sharpening a pencil restores its original sharpness'() {
+        given:
+        def pencil = new Pencil(2)
+
+        when:
+        pencil.write(paper, 'q'*3)
+        pencil.sharpen()
+        pencil.write(paper, 'q'*3)
+
+        then:
+        paper.contents == 'qq qq '
+    }
+
+    def 'can be sharpened a finite number of times'() {
+        given:
+        def pencil = new Pencil(5, 1)
+
+        when:
+        pencil.write(paper, 'q'*6)
+        pencil.sharpen()
+        pencil.write(paper, 'q'*6)
+        pencil.sharpen()
+        pencil.write(paper, 'q'*6)
+
+        then:
+        paper.contents == 'qqqqq '*2 + ' '*6
     }
 
 }

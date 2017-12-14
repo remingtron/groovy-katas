@@ -7,10 +7,12 @@ class PencilSpec extends Specification {
 
     def setup() {
         paper = new Paper()
-        pencil = new Pencil()
     }
 
     def 'it can write on blank paper'() {
+        given:
+        def pencil = new Pencil()
+
         when:
         pencil.write(paper, 'my first sentence')
 
@@ -20,6 +22,7 @@ class PencilSpec extends Specification {
 
     def 'it can write on paper that already has text'() {
         given:
+        def pencil = new Pencil()
         paper.contents = 'prior text'
 
         when:
@@ -27,6 +30,39 @@ class PencilSpec extends Specification {
 
         then:
         paper.contents == 'prior text more text'
+    }
+
+    def 'given an initial sharpness, it will write that many lower case letters then blanks'() {
+        given:
+        def pencil = new Pencil(5)
+
+        when:
+        pencil.write(paper, 'e'*6)
+
+        then:
+        paper.contents == 'eeeee' + ' '*1
+    }
+
+    def 'upper case letters degrade sharpness by two'() {
+        given:
+        def pencil = new Pencil(6)
+
+        when:
+        pencil.write(paper, 'E'*6)
+
+        then:
+        paper.contents == 'EEE' + ' '*3
+    }
+
+    def 'spaces do not consume sharpness'() {
+        given:
+        def pencil = new Pencil(3)
+
+        when:
+        pencil.write(paper, 'a a a')
+
+        then:
+        paper.contents == 'a a a'
     }
 
 }

@@ -1,0 +1,3 @@
+class Paper {
+    String contents = ''
+}

@@ -65,4 +65,15 @@ class PencilSpec extends Specification {
         paper.contents == 'a a a'
     }
 
+    def 'it will write a lower case letter instead of an upper case letter if it only has one sharpness left'() {
+        given:
+        def pencil = new Pencil(1)
+
+        when:
+        pencil.write(paper, 'A')
+
+        then:
+        paper.contents == 'a'
+    }
+
 }

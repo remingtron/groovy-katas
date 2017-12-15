@@ -115,4 +115,16 @@ class PencilSpec extends Specification {
         paper.contents == 'qqqqq '*2 + ' '*6
     }
 
+    def 'can erase the last occurrence of a string from the paper'() {
+        given:
+        def pencil = new Pencil()
+        paper.contents = 'this is the best sentence'
+
+        when:
+        pencil.erase(paper, 'best')
+
+        then:
+        paper.contents == 'this is the ' + ' '*4 + ' sentence'
+    }
+
 }

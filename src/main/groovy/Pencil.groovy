@@ -20,6 +20,14 @@ class Pencil {
         }
     }
 
+    def erase(Paper paper, String toRemove) {
+        paper.contents = replaceLast(paper.contents, toRemove, ' '*toRemove.length())
+    }
+
+    private replaceLast(String string, String toReplace, String replaceWith) {
+        string.reverse().replaceFirst(toReplace.reverse(), replaceWith.reverse()).reverse()
+    }
+
     private attemptToWriteLetter(Character letter) {
         def sharpnessRequired = sharpnessConsumedBy(letter)
         if (this.sharpness >= sharpnessRequired) {

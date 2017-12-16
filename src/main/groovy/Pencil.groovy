@@ -1,11 +1,12 @@
 class Pencil {
 
-    private sharpness, initialSharpness, length
+    private sharpness, initialSharpness, length, eraserDurability
 
-    Pencil(sharpness = 100, length = 10) {
+    Pencil(sharpness = 100, length = 10, eraserDurability = 100) {
         this.initialSharpness = sharpness
         this.sharpness = sharpness
         this.length = length
+        this.eraserDurability = eraserDurability
     }
 
     def write(Paper paper, String text) {
@@ -21,11 +22,20 @@ class Pencil {
     }
 
     def erase(Paper paper, String toRemove) {
-        paper.contents = replaceLast(paper.contents, toRemove, ' '*toRemove.length())
-    }
+        def indexOfLastOccurrence = paper.contents.lastIndexOf(toRemove)
+        def contentsArray = paper.contents.toCharArray()
 
-    private replaceLast(String string, String toReplace, String replaceWith) {
-        string.reverse().replaceFirst(toReplace.reverse(), replaceWith.reverse()).reverse()
+        if (indexOfLastOccurrence == -1) {
+            return
+        }
+
+        (indexOfLastOccurrence..<indexOfLastOccurrence+toRemove.length()).step(-1).each { index ->
+            if (this.eraserDurability > 0) {
+                contentsArray[index] = ' '
+                this.eraserDurability--
+            }
+        }
+        paper.contents = contentsArray.join()
     }
 
     private attemptToWriteLetter(Character letter) {

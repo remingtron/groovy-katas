@@ -127,4 +127,32 @@ class PencilSpec extends Specification {
         paper.contents == 'this is the ' + ' '*4 + ' sentence'
     }
 
+    def 'eraser can erase finite number of letters'() {
+        given:
+        def pencil = new Pencil(1, 1, 3)
+        paper.contents = 'this is the best sentence'
+
+        when:
+        pencil.erase(paper, 'best')
+
+        then:
+        paper.contents == 'this is the b' + ' '*3 + ' sentence'
+    }
+
+    def 'does not erase anything'() {
+        given:
+        def pencil = new Pencil(1, 1, 3)
+        paper.contents = 'this is the best sentence'
+
+        when:
+        pencil.erase(paper, 'worst')
+
+        then:
+        paper.contents == 'this is the best sentence'
+    }
+
+    def 'erasing whitespace does not degrade eraser'() {
+
+    }
+
 }

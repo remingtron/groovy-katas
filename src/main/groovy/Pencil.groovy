@@ -30,7 +30,7 @@ class Pencil {
         }
 
         (indexOfLastOccurrence..<indexOfLastOccurrence+toRemove.length()).step(-1).each { index ->
-            if (this.eraserDurability > 0) {
+            if (this.eraserDurability > 0 && contentsArray[index] != ' ') {
                 contentsArray[index] = ' '
                 this.eraserDurability--
             }

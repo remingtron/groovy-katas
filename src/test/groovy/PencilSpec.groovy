@@ -139,7 +139,7 @@ class PencilSpec extends Specification {
         paper.contents == 'this is the b' + ' '*3 + ' sentence'
     }
 
-    def 'does not erase anything'() {
+    def 'does not erase anything if there is not matching text'() {
         given:
         def pencil = new Pencil(1, 1, 3)
         paper.contents = 'this is the best sentence'
@@ -152,7 +152,15 @@ class PencilSpec extends Specification {
     }
 
     def 'erasing whitespace does not degrade eraser'() {
+        given:
+        def pencil = new Pencil(1, 1, 7)
+        paper.contents = 'this is the best sentence'
 
+        when:
+        pencil.erase(paper, 'the best')
+
+        then:
+        paper.contents == 'this is ' + ' '*8 + ' sentence'
     }
 
 }
